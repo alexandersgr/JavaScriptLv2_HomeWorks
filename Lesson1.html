@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЗ #1</title>
+</head>
+
+<body>
+
+<script>
+    /*
+     1. Написать класс для генерации меню. Приватные свойства и методы на Ваше усмотрение. Публичные свойства и методы должны быть следующие:
+     - метод render должен возвращаться HTMLElement созданного меню
+     - свойство id идентификатор внешнего контейнера
+     - класс внешнего контейнера
+     Конструктор класса меню должен принимать на вход массив пунктов меню (объекты вида {title, href})
+     2. Расширить класс меню таким образом, чтобы в качестве пунктов меню могли быть другие меню. Использовать при это наследование
+     */
+
+
+    function Menu() {
+        this._HTMLMenu = document.createElement('ul');
+
+        this.render = function () {
+            return this._HTMLMenu;
+        };
+
+        this.addElement = function (arr) {
+            var li = document.createElement('li');
+            var link = document.createElement('a');
+            link.href = arr.href;
+            link.appendChild(document.createTextNode(arr.title));
+            li.appendChild(link);
+            this._HTMLMenu.appendChild(li);
+        }
+    }
+
+    function SuperMenu() {
+        Menu.call(this);
+
+        this.addSubMenu = function (submenu) {
+            this._HTMLMenu.appendChild(submenu);
+        }
+    }
+
+    siteMenu = new Menu();
+    siteMenu.addElement({title: "item1", href: "#"});
+    siteMenu.addElement({title: "item2", href: "#"});
+    siteMenu.addElement({title: "item3", href: "#"});
+    document.body.appendChild(siteMenu.render());
+
+
+    superMenu = new SuperMenu();
+    superMenu.addElement({title: "item4", href: "#"});
+    superMenu.addElement({title: "item5", href: "#"});
+    superMenu.addSubMenu(siteMenu.render());
+    superMenu.addElement({title: "item6", href: "#"});
+    document.body.appendChild(superMenu.render());
+
+
+</script>
+
+</body>
+</html>
