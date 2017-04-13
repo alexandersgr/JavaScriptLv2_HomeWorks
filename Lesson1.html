@@ -17,44 +17,112 @@
      2. Расширить класс меню таким образом, чтобы в качестве пунктов меню могли быть другие меню. Использовать при это наследование
      */
 
+    "use strict";
 
-    function Menu() {
-        this._HTMLMenu = document.createElement('ul');
+
+    function Menu(menuItemsArray) {
+
+        this.wrapperId = undefined;
+        this.wrapperClass = undefined;
 
         this.render = function () {
-            return this._HTMLMenu;
-        };
+            var div = document.createElement('div');
+            var count = menuItemsArray.length;
+            var ul = document.createElement('ul');
 
-        this.addElement = function (arr) {
-            var li = document.createElement('li');
-            var link = document.createElement('a');
-            link.href = arr.href;
-            link.appendChild(document.createTextNode(arr.title));
-            li.appendChild(link);
-            this._HTMLMenu.appendChild(li);
-        }
+            for (var i = 0; i < count; i++) {
+                var li = document.createElement('li');
+                var link = document.createElement('a');
+                link.href = menuItemsArray[i].href;
+                link.appendChild(document.createTextNode(menuItemsArray[i].title));
+                li.appendChild(link);
+                ul.appendChild(li);
+            }
+
+            div.appendChild(ul);
+            if (typeof this.wrapperId !== 'undefined') div.setAttribute("id", this.wrapperId);
+            if (typeof this.wrapperClass !== 'undefined') div.setAttribute("class", this.wrapperClass);
+
+            return div;
+        };
     }
 
-    function SuperMenu() {
+    function SuperMenu(menuItemsArray) {
         Menu.call(this);
 
-        this.addSubMenu = function (submenu) {
-            this._HTMLMenu.appendChild(submenu);
-        }
+        this.render = function () {
+            var div = document.createElement('div');
+            var count = menuItemsArray.length;
+            var ul = document.createElement('ul');
+
+            for (var i = 0; i < count; i++) {
+
+                var li = document.createElement('li');
+
+                if (typeof menuItemsArray[i].title !== 'string') {
+
+                    var ulLevel2 = document.createElement('ul');
+
+                    for (var j = 0; j < menuItemsArray[i].length; j++) {
+                        var li2 = document.createElement('li');
+                        var link2 = document.createElement('a');
+                        link2.href = menuItemsArray[i][j].href;
+                        link2.appendChild(document.createTextNode(menuItemsArray[i][j].title));
+                        li2.appendChild(link2);
+                        ulLevel2.appendChild(li2);
+                    }
+
+                    ul.appendChild(ulLevel2);
+
+                } else {
+                    var link = document.createElement('a');
+                    link.href = menuItemsArray[i].href;
+                    link.appendChild(document.createTextNode(menuItemsArray[i].title));
+                    li.appendChild(link);
+                    ul.appendChild(li);
+                }
+            }
+
+            div.appendChild(ul);
+            if (typeof this.wrapperId !== 'undefined') div.setAttribute("id", this.wrapperId);
+            if (typeof this.wrapperClass !== 'undefined') div.setAttribute("class", this.wrapperClass);
+
+            return div;
+        };
     }
 
-    siteMenu = new Menu();
-    siteMenu.addElement({title: "item1", href: "#"});
-    siteMenu.addElement({title: "item2", href: "#"});
-    siteMenu.addElement({title: "item3", href: "#"});
-    document.body.appendChild(siteMenu.render());
+    // Одноуровневое меню
+    var firstMenu = new Menu(
+        [
+            {title: "item1", href: "#"},
+            {title: "item2", href: "#"},
+            {title: "item3", href: "#"}
+        ]
+    );
+
+    firstMenu.wrapperClass = "className";
+    firstMenu.wrapperId = "id1";
+
+    document.body.appendChild(firstMenu.render());
 
 
-    superMenu = new SuperMenu();
-    superMenu.addElement({title: "item4", href: "#"});
-    superMenu.addElement({title: "item5", href: "#"});
-    superMenu.addSubMenu(siteMenu.render());
-    superMenu.addElement({title: "item6", href: "#"});
+    // Меню со вложенным
+    var superMenu = new SuperMenu(
+        [
+            {title: "item1", href: "#"},
+            {title: "item2", href: "#"},
+            [
+                {title: "subitem1", href: "#"},
+                {title: "subitem2", href: "#"},
+                {title: "subitem3", href: "#"}
+            ],
+            {title: "item3", href: "#"}
+        ]
+    );
+
+    superMenu.wrapperClass = "className";
+    superMenu.wrapperId = "id2";
+
     document.body.appendChild(superMenu.render());
 
 
