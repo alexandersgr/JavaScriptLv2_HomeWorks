@@ -179,8 +179,9 @@
             var jsonObj = JSON.parse(xmlhttp.responseText);
 
             //cont.innerHTML = "<pre>" + xmlhttp.responseText + "</pre>";
+            cont.innerHTML = "";
 
-            if (jsonObj.result === false || jsonObj.result === true) {
+            //if (jsonObj.result === false || jsonObj.result === true) {
 
                 if (jsonObj.result !== true && jsonObj.error.Username !== undefined) {
                     username_text.innerHTML = jsonObj.error.Username;
@@ -194,7 +195,7 @@
                     username_group.className = "form-group has-success has-feedback";
                 }
 
-                if (jsonObj.error.Password !== undefined) {
+                if (jsonObj.result !== true && jsonObj.error.Password !== undefined) {
                     password_text.innerHTML = jsonObj.error.Password;
                     password_error.style = "visibility: visible;";
                     password_sucsess.style = "visibility: hidden;";
@@ -206,7 +207,7 @@
                     password_group.className = "form-group has-success has-feedback";
                 }
 
-                if (jsonObj.error.Email !== undefined) {
+                if (jsonObj.result !== true && jsonObj.error.Email !== undefined) {
                     email_text.innerHTML = jsonObj.error.Email;
                     email_error.style = "visibility: visible;";
                     email_sucsess.style = "visibility: hidden;";
@@ -218,7 +219,7 @@
                     email_group.className = "form-group has-success has-feedback";
                 }
 
-                if (jsonObj.error["Credit Card"] !== undefined) {
+                if (jsonObj.result !== true && jsonObj.error["Credit Card"] !== undefined) {
                     credit_card_text.innerHTML = jsonObj.error["Credit Card"];
                     credit_card_error.style = "visibility: visible;";
                     credit_card_sucsess.style = "visibility: hidden;";
@@ -230,7 +231,7 @@
                     credit_card_group.className = "form-group has-success has-feedback";
                 }
 
-                if (jsonObj.error.Gender !== undefined) {
+                if (jsonObj.result !== true && jsonObj.error.Gender !== undefined) {
                     gender_text.innerHTML = jsonObj.error.Gender;
                     gender_error.style = "visibility: visible;";
                     gender_sucsess.style = "visibility: hidden;";
@@ -242,7 +243,7 @@
                     gender_group.className = "form-group has-success has-feedback";
                 }
 
-                if (jsonObj.error.Bio !== undefined) {
+                if (jsonObj.result !== true && jsonObj.error.Bio !== undefined) {
                     bio_text.innerHTML = jsonObj.error.Bio;
                     bio_error.style = "visibility: visible;";
                     bio_sucsess.style = "visibility: hidden;";
@@ -254,7 +255,7 @@
                     bio_group.className = "form-group has-success has-feedback";
                 }
 
-                if (jsonObj.error.Birth !== undefined) {
+                if (jsonObj.result !== true && jsonObj.error.Birth !== undefined) {
                     birth_text.innerHTML = jsonObj.error.Birth;
                     birth_error.style = "visibility: visible;";
                     birth_sucsess.style = "visibility: hidden;";
@@ -265,9 +266,14 @@
                     birth_sucsess.style = "visibility: visible;";
                     birth_group.className = "form-group has-success has-feedback";
                 }
-            }
+            //}
 
             //console.log(xmlhttp.responseText);
+        }
+
+        //console.log(xmlhttp.status);
+        if (xmlhttp.status===0){
+            cont.innerHTML = "Валидатор недоступен!";
         }
     };
 
