@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЗ #2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .help-block {
+            display: inline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container" style="width: 40%">
+    <h2>PHP/AJAX - валидатор</h2>
+    <form class="form-horizontal" action="" id="form1">
+
+        <div id="username_group" class="form-group">
+            <label class="control-label col-sm-3" for="username">Имя:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="username" placeholder="Введите имя пользователя">
+                <span id="username_text" class="help-block"></span>
+                <span id="username_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="username_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+
+        <div id="password_group" class="form-group">
+            <label class="control-label col-sm-3" for="password">Пароль:</label>
+            <div class="col-sm-9">
+                <input type="password" class="form-control" id="password" placeholder="Введите пароль">
+                <span id="password_text" class="help-block"></span>
+                <span id="password_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="password_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+
+        <div id="email_group" class="form-group">
+            <label class="control-label col-sm-3" for="email">E-Mail:</label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control" id="email" placeholder="Введите E-Mail">
+                <span id="email_text" class="help-block"></span>
+                <span id="email_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="email_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+
+        <div id="gender_group" class="form-group">
+            <label class="control-label col-sm-3" for="gender">Пол:</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="gender">
+                    <option value="m">Мужчина</option>
+                    <option value="f">Женщина</option>
+                </select>
+                <span id="gender_text" class="help-block"></span>
+                <span id="gender_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="gender_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+
+        <div id="credit_card_group" class="form-group">
+            <label class="control-label col-sm-3" for="credit_card">Карта:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="credit_card" placeholder="Введите номер банковской карты">
+                <span id="credit_card_text" class="help-block"></span>
+                <span id="credit_card_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="credit_card_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+
+
+        <div id="bio_group" class="form-group">
+            <label class="control-label col-sm-3" for="bio">Биография:</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" rows="3" id="bio" placeholder="Биография"></textarea>
+                <span id="bio_text" class="help-block"></span>
+                <span id="bio_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="bio_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+
+        <div id="birth_group" class="form-group">
+            <label class="control-label col-sm-3" for="birth">Дата&nbsp;рождения:</label>
+            <div class="col-sm-9">
+                <input type="date" class="form-control" id="birth" placeholder="Введите дату рождения">
+                <span id="birth_text" class="help-block"></span>
+                <span id="birth_error" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+                <span id="birth_sucsess" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                      style="visibility:hidden;"></span>
+            </div>
+        </div>
+    </form>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-9">
+            <button class="btn btn-default" onclick="getJson()">Отправить</button>
+
+            <div id="cont"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    "use strict";
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) {// код для IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {// код для IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    var cont = document.getElementById("cont");
+
+    var username = document.getElementById("username");
+    var username_group = document.getElementById("username_group");
+    var username_sucsess = document.getElementById("username_sucsess");
+    var username_error = document.getElementById("username_error");
+    var username_text = document.getElementById("username_text");
+
+    var password = document.getElementById("password");
+    var password_group = document.getElementById("password_group");
+    var password_sucsess = document.getElementById("password_sucsess");
+    var password_error = document.getElementById("password_error");
+    var password_text = document.getElementById("password_text");
+
+    var email = document.getElementById("email");
+    var email_group = document.getElementById("email_group");
+    var email_sucsess = document.getElementById("email_sucsess");
+    var email_error = document.getElementById("email_error");
+    var email_text = document.getElementById("email_text");
+
+    var gender = document.getElementById("gender");
+    var gender_group = document.getElementById("gender_group");
+    var gender_sucsess = document.getElementById("gender_sucsess");
+    var gender_error = document.getElementById("gender_error");
+    var gender_text = document.getElementById("gender_text");
+
+    var credit_card = document.getElementById("credit_card");
+    var credit_card_group = document.getElementById("credit_card_group");
+    var credit_card_sucsess = document.getElementById("credit_card_sucsess");
+    var credit_card_error = document.getElementById("credit_card_error");
+    var credit_card_text = document.getElementById("credit_card_text");
+
+    var bio = document.getElementById("bio");
+    var bio_group = document.getElementById("bio_group");
+    var bio_sucsess = document.getElementById("bio_sucsess");
+    var bio_error = document.getElementById("bio_error");
+    var bio_text = document.getElementById("bio_text");
+
+    var birth = document.getElementById("birth");
+    var birth_group = document.getElementById("birth_group");
+    var birth_sucsess = document.getElementById("birth_sucsess");
+    var birth_error = document.getElementById("birth_error");
+    var birth_text = document.getElementById("birth_text");
+
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === xmlhttp.DONE && xmlhttp.status === 200) {
+
+            var jsonObj = JSON.parse(xmlhttp.responseText);
+
+            //cont.innerHTML = "<pre>" + xmlhttp.responseText + "</pre>";
+
+            if (jsonObj.result === false || jsonObj.result === true) {
+
+                if (jsonObj.result !== true && jsonObj.error.Username !== undefined) {
+                    username_text.innerHTML = jsonObj.error.Username;
+                    username_error.style = "visibility: visible;";
+                    username_sucsess.style = "visibility: hidden;";
+                    username_group.className = "form-group has-error has-feedback";
+                } else {
+                    username_text.innerHTML = "";
+                    username_error.style = "visibility: hidden;";
+                    username_sucsess.style = "visibility: visible;";
+                    username_group.className = "form-group has-success has-feedback";
+                }
+
+                if (jsonObj.error.Password !== undefined) {
+                    password_text.innerHTML = jsonObj.error.Password;
+                    password_error.style = "visibility: visible;";
+                    password_sucsess.style = "visibility: hidden;";
+                    password_group.className = "form-group has-error has-feedback";
+                } else {
+                    password_text.innerHTML = "";
+                    password_error.style = "visibility: hidden;";
+                    password_sucsess.style = "visibility: visible;";
+                    password_group.className = "form-group has-success has-feedback";
+                }
+
+                if (jsonObj.error.Email !== undefined) {
+                    email_text.innerHTML = jsonObj.error.Email;
+                    email_error.style = "visibility: visible;";
+                    email_sucsess.style = "visibility: hidden;";
+                    email_group.className = "form-group has-error has-feedback";
+                } else {
+                    email_text.innerHTML = "";
+                    email_error.style = "visibility: hidden;";
+                    email_sucsess.style = "visibility: visible;";
+                    email_group.className = "form-group has-success has-feedback";
+                }
+
+                if (jsonObj.error["Credit Card"] !== undefined) {
+                    credit_card_text.innerHTML = jsonObj.error["Credit Card"];
+                    credit_card_error.style = "visibility: visible;";
+                    credit_card_sucsess.style = "visibility: hidden;";
+                    credit_card_group.className = "form-group has-error has-feedback";
+                } else {
+                    credit_card_text.innerHTML = "";
+                    credit_card_error.style = "visibility: hidden;";
+                    credit_card_sucsess.style = "visibility: visible;";
+                    credit_card_group.className = "form-group has-success has-feedback";
+                }
+
+                if (jsonObj.error.Gender !== undefined) {
+                    gender_text.innerHTML = jsonObj.error.Gender;
+                    gender_error.style = "visibility: visible;";
+                    gender_sucsess.style = "visibility: hidden;";
+                    gender_group.className = "form-group has-error has-feedback";
+                } else {
+                    gender_text.innerHTML = "";
+                    gender_error.style = "visibility: hidden;";
+                    gender_sucsess.style = "visibility: visible;";
+                    gender_group.className = "form-group has-success has-feedback";
+                }
+
+                if (jsonObj.error.Bio !== undefined) {
+                    bio_text.innerHTML = jsonObj.error.Bio;
+                    bio_error.style = "visibility: visible;";
+                    bio_sucsess.style = "visibility: hidden;";
+                    bio_group.className = "form-group has-error has-feedback";
+                } else {
+                    bio_text.innerHTML = "";
+                    bio_error.style = "visibility: hidden;";
+                    bio_sucsess.style = "visibility: visible;";
+                    bio_group.className = "form-group has-success has-feedback";
+                }
+
+                if (jsonObj.error.Birth !== undefined) {
+                    birth_text.innerHTML = jsonObj.error.Birth;
+                    birth_error.style = "visibility: visible;";
+                    birth_sucsess.style = "visibility: hidden;";
+                    birth_group.className = "form-group has-error has-feedback";
+                } else {
+                    birth_text.innerHTML = "";
+                    birth_error.style = "visibility: hidden;";
+                    birth_sucsess.style = "visibility: visible;";
+                    birth_group.className = "form-group has-success has-feedback";
+                }
+            }
+
+            //console.log(xmlhttp.responseText);
+        }
+    };
+
+    function getJson() {
+        //https://api.fixer.io/latest?symbols=USD,RUB
+
+        xmlhttp.open("POST", "http://localhost/js2/validator.php", true);
+        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var formData =
+            "username=" + username.value
+            + "&password=" + password.value
+            + "&email=" + email.value
+            + "&gender=" + gender.value
+            + "&credit_card=" + credit_card.value
+            + "&bio=" + bio.value
+            + "&birth=" + birth.value;
+
+        xmlhttp.send(formData);
+    }
+
+</script>
+
+</body>
+</html>
