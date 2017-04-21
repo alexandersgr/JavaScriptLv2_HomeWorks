@@ -18,7 +18,7 @@
 
 <div class="container" style="width: 40%">
     <h2>PHP/AJAX - валидатор</h2>
-    <form class="form-horizontal" action="" id="form1">
+    <div class="form-horizontal" action="" id="form1">
 
         <div id="username_group" class="form-group">
             <label class="control-label col-sm-3" for="username">Имя:</label>
@@ -107,7 +107,7 @@
                       style="visibility:hidden;"></span>
             </div>
         </div>
-    </form>
+
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-9">
             <button class="btn btn-default" onclick="getJson()">Отправить</button>
@@ -115,7 +115,13 @@
             <div id="cont"></div>
         </div>
     </div>
+    </div>
 </div>
+
+
+<div id="ddd" class="abc">1</div>
+<div class="abc">2</div>
+<div class="abc">3</div>
 
 <script>
 
@@ -173,6 +179,8 @@
     var birth_text = document.getElementById("birth_text");
 
 
+
+
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === xmlhttp.DONE && xmlhttp.status === 200) {
 
@@ -182,6 +190,17 @@
             cont.innerHTML = "";
 
             //if (jsonObj.result === false || jsonObj.result === true) {
+
+
+/*            if(!jsonObj.result) {
+
+                jsonObj.error.forEach(function(item, key){
+                    var correctKey = key.toLowerCase().replace(" ", "_");
+                    document.getElementById(correctKey + "_text").innerHTML = item;
+
+                });
+            }*/
+
 
                 if (jsonObj.result !== true && jsonObj.error.Username !== undefined) {
                     username_text.innerHTML = jsonObj.error.Username;
@@ -282,6 +301,17 @@
 
         xmlhttp.open("POST", "http://localhost/js2/validator.php", true);
         xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+/*        var fields = document.getElementsByClassName("form-control");
+        myArr = Array.prototype.slice.apply(fields);
+        var formData = myArr.map(function(item){
+            return item.id + "=" + item.value;
+        }).join("&");
+
+arr = Array.prototype.slice.call(arr, 0)
+
+        */
+
         var formData =
             "username=" + username.value
             + "&password=" + password.value
