@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЗ #4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <style>
+        .content{
+            border-bottom: 1px solid #dddddd;
+            border-left: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+            padding: 5px;
+        }
+        .content-hidden{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container" style="width: 40%">
+<h2>ДЗ #4</h2>
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" class="active"><a class="tab" href="#">Tab 1</a></li>
+        <li role="presentation"><a class="tab" href="#">Tab 2</a></li>
+        <li role="presentation"><a class="tab" href="#">Tab 3</a></li>
+    </ul>
+    <div class="content">
+        <div class="">tab1-content</div>
+        <div class="content-hidden">tab2-content</div>
+        <div class="content-hidden">tab3-content</div>
+    </div>
+</div>
+
+
+<script>
+    "use strict";
+
+    $('.tab').bind( 'click', navClick );
+
+    function navClick(event) {
+
+        var tabIndex = $(this).parent().index();
+
+        $(".nav").children("li").each(function(indx, element){
+            if (indx == tabIndex){
+                $(element).addClass("active");
+            }else
+            {
+                $(element).removeClass("active");
+            }
+        });
+
+
+        $(".content").children("div").each(function(indx, element){
+            if (indx == tabIndex){
+                $(element).removeClass("content-hidden");
+            }else
+            {
+                $(element).addClass("content-hidden");
+            }
+
+        });
+    }
+
+
+</script>
+
+</body>
+</html>
